@@ -1,0 +1,151 @@
+name: Update profile
+
+# Refreshes all numbers on the profile and links a game as soon as its
+# repository becomes public.
+#
+# E-mails: GitHub only mails about failed runs. Every normal step may fail
+# without failing the run, so a single outage (GitHub or shields.io down) is
+# silently skipped and the next run tries again. Only if the profile could not
+# be updated for two days in a row does the last step fail on purpose; GitHub
+# then sends its usual "run failed" e-mail to the address of the account.
+# While it stays broken, that reminder repeats every two days. No e-mail
+# address is stored anywhere in this repository.
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # every 15 minutes (GitHub may start scheduled runs a little late)
+  workflow_dispatch:          # "Run workflow" button in the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/**'
+      - '.github/workflows/update-profile.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-profile
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Profile update
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Update badges and game cards
+        id: update
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node .github/scripts/update-profile.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes
+        id: commit
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md assets/badges assets/calendar.svg assets/ornament.svg
+          if git diff --cached --quiet; then
+            # GitHub pauses scheduled workflows after 60 days without any commit.
+            # If nothing changed for 45 days, an empty commit keeps this one running.
+            last=$(git log -1 --format=%ct)
+            if [ $(( $(date +%s) - last )) -lt $(( 45 * 86400 )) ]; then
+              echo "Nothing changed."
+              exit 0
+            fi
+            git commit --allow-empty -m "Keep the profile update running"
+          else
+            git commit -m "Update profile stats"
+          fi
+          if ! { git pull --rebase && git push; }; then
+            echo "::warning::Could not push this time, the next run will try again."
+            exit 1
+          fi
+
+      # Remembers since when updates fail (branch "profile-status", one small JSON file,
+      # only written when something changes) and decides whether a reminder is due.
+      - name: Health check
+        id: health
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          OK: ${{ steps.update.outcome == 'success' && steps.commit.outcome == 'success' }}
+          TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -d .git ]; then
+            git init -q
+            git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          set +e
+          git ls-remote --exit-code origin refs/heads/profile-status > /dev/null 2>&1
+          found=$?
+          set -e
+          if [ "$found" = "0" ]; then
+            git fetch -q origin profile-status
+            STATE=$(git show FETCH_HEAD:status.json)
+          elif [ "$found" = "2" ]; then
+            STATE='{}'
+          else
+            echo "::warning::Status could not be read, health check skipped this time."
+            echo "alert=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          RESULT=$(OK="$OK" STATE="$STATE" node --input-type=module <<'JS'
+          const TWO_DAYS = 2 * 86400000;
+          const now = process.env.NOW ? new Date(process.env.NOW) : new Date();
+          let state;
+          try { state = JSON.parse(process.env.STATE || '{}') || {}; } catch { state = {}; }
+          const before = JSON.stringify(state);
+          let alert = false, message = '';
+          if (process.env.OK === 'true') {
+            state = {};                                   // working again: forget everything
+          } else {
+            if (!state.failingSince) state.failingSince = now.toISOString();
+            const failingFor = now - new Date(state.failingSince);
+            const sinceAlert = state.lastAlert ? now - new Date(state.lastAlert) : Infinity;
+            if (failingFor >= TWO_DAYS && sinceAlert >= TWO_DAYS) {
+              alert = true;
+              state.lastAlert = now.toISOString();
+              message = `The profile could not be updated since ${state.failingSince.slice(0, 16).replace('T', ' ')} UTC ` +
+                `(${Math.floor(failingFor / 86400000)} days). Reminder repeats every 2 days until it works again.`;
+            }
+          }
+          const after = JSON.stringify(state);
+          console.log(JSON.stringify({ state: after, changed: after !== before, alert, message }));
+          JS
+          )
+          NEW=$(node -e 'console.log(JSON.parse(process.argv[1]).state)' "$RESULT")
+          CHANGED=$(node -e 'console.log(JSON.parse(process.argv[1]).changed)' "$RESULT")
+          ALERT=$(node -e 'console.log(JSON.parse(process.argv[1]).alert)' "$RESULT")
+          MESSAGE=$(node -e 'console.log(JSON.parse(process.argv[1]).message)' "$RESULT")
+          if [ "$CHANGED" = "true" ]; then
+            blob=$(printf '%s' "$NEW" | git hash-object -w --stdin)
+            tree=$(printf '100644 blob %s\tstatus.json\n' "$blob" | git mktree)
+            commit=$(git commit-tree "$tree" -m "Profile update status (for the 2-day reminder)")
+            if ! git push -q -f origin "$commit:refs/heads/profile-status"; then
+              # without a stored reminder time it could remind every 15 minutes, so stay quiet
+              echo "::warning::Status could not be stored, no reminder this time."
+              ALERT=false
+            fi
+          fi
+          echo "alert=$ALERT" >> "$GITHUB_OUTPUT"
+          echo "message=$MESSAGE" >> "$GITHUB_OUTPUT"
+
+      # The only step that may fail the run, and with it the only source of e-mails.
+      - name: Profile could not be updated for 2 days
+        if: steps.health.outputs.alert == 'true'
+        env:
+          MESSAGE: ${{ steps.health.outputs.message }}
+        run: |
+          echo "::error::$MESSAGE"
+          exit 1
