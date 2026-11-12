@@ -367,5 +367,6 @@
 <polygon points="811.9,15.6 819.0,8.5 826.1,15.6 819.0,22.7" fill="#8b949e" fill-opacity="0.2"/>
 <polygon points="811.9,30.8 819.0,23.7 826.1,30.8 819.0,37.9" fill="#8b949e" fill-opacity="0.2"/>
 <polygon points="811.9,46.0 819.0,38.9 826.1,46.0 819.0,53.1" fill="#8b949e" fill-opacity="0.2"/>
-<polygon points="811.9,61.2 819.0,54.1 826.1,61.2 819.0,68.3" fill="#8b949e" fill-opacity="0.2"/>
+<polygon points="811.9,61.2 819.0,54.1 826.1,61.2 819.0,68.3" fill="#4f6f86"/>
+<polygon points="811.9,76.4 819.0,69.3 826.1,76.4 819.0,83.5" fill="#8b949e" fill-opacity="0.2"/>
 </svg>
