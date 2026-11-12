@@ -5,7 +5,7 @@
 <br><br>
 
 <!-- stats:start -->
-<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 5 days ago, projects: 3, releases: 21, commits: 40, downloads: 40, releases this month: 7, on github for: 19 days"></a>
+<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 5 days ago, projects: 3, releases: 21, commits: 40, downloads: 40, releases this month: 7, on github for: 20 days"></a>
 <!-- stats:end -->
 
 <br><br>
