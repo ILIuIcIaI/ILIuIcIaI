@@ -23,7 +23,7 @@
 <a href="https://github.com/ILIuIcIaI/enterhaken-prototyp"><img src="assets/projects/grappling-hook.jpg" alt="Grappling Hook Prototype"></a>
 <h3><a href="https://github.com/ILIuIcIaI/enterhaken-prototyp">Grappling Hook Prototype</a></h3>
 <img src="assets/badges/grappling-hook-prototype-version.svg" alt="version: v0.8.0">
-<img src="assets/badges/grappling-hook-prototype-updated.svg" alt="updated: 13 days ago">
+<img src="assets/badges/grappling-hook-prototype-updated.svg" alt="updated: 2 weeks ago">
 <img src="assets/badges/grappling-hook-prototype-runs-on.svg" alt="runs on: Browser">
 </td>
 <td width="33%" valign="top">
