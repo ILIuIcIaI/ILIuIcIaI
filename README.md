@@ -5,7 +5,7 @@
 <br><br>
 
 <!-- stats:start -->
-<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 6 days ago, projects: 3, releases: 22, commits: 80, downloads: 59, releases this month: 8, on github for: 29 days"></a>
+<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 7 days ago, projects: 3, releases: 22, commits: 80, downloads: 59, releases this month: 8, on github for: 29 days"></a>
 <!-- stats:end -->
 
 <br><br>
@@ -31,7 +31,7 @@
 <h3><a href="https://github.com/ILIuIcIaI/Call-of-Duty-Black-Warfare-69">Call of Duty Black Warfare 69</a></h3>
 <img src="assets/badges/call-of-duty-black-warfare-69-version.svg" alt="version: v0.8.0">
 <img src="assets/badges/call-of-duty-black-warfare-69-downloads.svg" alt="downloads: 52">
-<img src="assets/badges/call-of-duty-black-warfare-69-updated.svg" alt="updated: 6 days ago">
+<img src="assets/badges/call-of-duty-black-warfare-69-updated.svg" alt="updated: 7 days ago">
 <img src="assets/badges/call-of-duty-black-warfare-69-runs-on.svg" alt="runs on: Windows · Browser">
 </td>
 </tr>
