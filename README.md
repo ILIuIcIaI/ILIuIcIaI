@@ -5,7 +5,7 @@
 <br><br>
 
 <!-- stats:start -->
-<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 11 days ago, projects: 3, releases: 22, commits: 80, downloads: 67, releases this month: 8, on github for: 34 days"></a>
+<a href="https://github.com/ILIuIcIaI?tab=repositories"><img src="assets/badges/stats-grid.svg" alt="from: Germany, followers: 1, stars: 0, last active: 12 days ago, projects: 3, releases: 22, commits: 80, downloads: 67, releases this month: 8, on github for: 34 days"></a>
 <!-- stats:end -->
 
 <br><br>
@@ -23,7 +23,7 @@
 <a href="https://github.com/ILIuIcIaI/enterhaken-prototyp"><img src="assets/projects/grappling-hook.jpg" alt="Grappling Hook Prototype"></a>
 <h3><a href="https://github.com/ILIuIcIaI/enterhaken-prototyp">Grappling Hook Prototype</a></h3>
 <img src="assets/badges/grappling-hook-prototype-version.svg" alt="version: v0.8.0">
-<img src="assets/badges/grappling-hook-prototype-updated.svg" alt="updated: 3 weeks ago">
+<img src="assets/badges/grappling-hook-prototype-updated.svg" alt="updated: 4 weeks ago">
 <img src="assets/badges/grappling-hook-prototype-runs-on.svg" alt="runs on: Browser">
 </td>
 <td width="33%" valign="top">
@@ -31,7 +31,7 @@
 <h3><a href="https://github.com/ILIuIcIaI/Call-of-Duty-Black-Warfare-69">Call of Duty Black Warfare 69</a></h3>
 <img src="assets/badges/call-of-duty-black-warfare-69-version.svg" alt="version: v0.8.0">
 <img src="assets/badges/call-of-duty-black-warfare-69-downloads.svg" alt="downloads: 60">
-<img src="assets/badges/call-of-duty-black-warfare-69-updated.svg" alt="updated: 11 days ago">
+<img src="assets/badges/call-of-duty-black-warfare-69-updated.svg" alt="updated: 12 days ago">
 <img src="assets/badges/call-of-duty-black-warfare-69-runs-on.svg" alt="runs on: Windows · Browser">
 </td>
 </tr>
